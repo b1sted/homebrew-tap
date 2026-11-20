@@ -1,38 +1,74 @@
 class Vlsx < Formula
-  desc "A lightweight terminal toolkit in C for network engineers"
+  desc "Lightweight terminal toolkit in C for network engineers"
   homepage "https://github.com/b1sted/vlsx"
-  version "0.1"
+  url "https://github.com/b1sted/vlsx/archive/refs/tags/v0.1.1.tar.gz"
+  sha256 "54ec69342978280f10062b2d4bdb8bb936a01673e46f211d869cf7c2dc06c84f"
   license "GPL-3.0-or-later"
 
-  on_macos do
-    on_arm do
-      url "https://github.com/b1sted/vlsx/releases/download/v0.1/vlsx-macos-arm64.tar.gz"
-      sha256 "0fb6ad954745964ff081309a519a632398a79b9277d2a38a49a300ffc76b8824"
-    end
-
-    on_intel do
-      url "https://github.com/b1sted/vlsx/releases/download/v0.1/vlsx-macos-intel-modern.tar.gz"
-      sha256 "ae41cce3658950347cdb2a6463908b4f8084d2a9af81eb7a28233b64e0cbfd41"
-    end
-  end
-
-  on_linux do
-    on_arm do
-      url "https://github.com/b1sted/vlsx/releases/download/v0.1/vlsx-linux-arm64.tar.gz"
-      sha256 "f0778e4aa36767b045fcbeef05a7d7a29a277c3f8ea9eb646e36a49552e0475a"
-    end
-
-    on_intel do
-      url "https://github.com/b1sted/vlsx/releases/download/v0.1/vlsx-linux-amd64.tar.gz"
-      sha256 "8b388014bbd3307106337f7be80b74a319f38529eabe253eb2c7e783c46a0c92"
-    end
-  end
-
   def install
-    bin.install "vlsx"
+    system "make", "VERSION=#{version}"
+    bin.install "bin/vlsx"
   end
 
   test do
-    system "#{bin}/vlsx", "-v"
+    require "io/console"
+    require "pty"
+    require "timeout"
+
+    vlsx = bin/"vlsx"
+    assert_match "vlsx v#{version}", shell_output("#{vlsx} -v")
+
+    run_tui = lambda do |keys|
+      output = +""
+      reader, writer, pid = PTY.spawn({ "TERM" => "xterm-256color" }, vlsx.to_s)
+
+      begin
+        reader.winsize = [40, 120]
+
+        Timeout.timeout(10) do
+          loop do
+            output << reader.readpartial(4096)
+            break if output.include?("IP & VLSM")
+          end
+        end
+
+        writer.write(keys)
+        writer.flush
+
+        Timeout.timeout(10) do
+          loop { output << reader.readpartial(4096) }
+        end
+      rescue EOFError, Errno::EIO
+        nil
+      rescue Timeout::Error
+        Process.kill("KILL", pid)
+        raise
+      ensure
+        begin
+          writer.close
+        rescue IOError, Errno::EIO
+          nil
+        end
+        begin
+          reader.close
+        rescue IOError, Errno::EIO
+          nil
+        end
+        begin
+          Process.wait(pid)
+        rescue Errno::ECHILD
+          nil
+        end
+      end
+
+      output
+    end
+
+    ipv4_output = run_tui.call("\r\r192.168.0.54/26\rq")
+    assert_match "255.255.255.192", ipv4_output
+    assert_match "192.168.0.62", ipv4_output
+
+    multicast_output = run_tui.call("\e[B\r2\r239.1.1.15\rq")
+    assert_match "01:00:5E:01:01:0F", multicast_output
   end
 end
