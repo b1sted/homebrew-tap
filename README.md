@@ -35,7 +35,7 @@ brew install <package-name>
 
 | Package | Description | Command |
 | :--- | :--- | :--- |
-| [**`textfetch`**](https://github.com/b1sted/textfetch) | Another fetch tool for UNIX systems, written just for fun. | `brew install b1sted/tap/textfetch` |
+| [**`textfetch`**](https://github.com/b1sted/textfetch) | A minimal, fast system information tool for UNIX systems with no third-party dependencies. | `brew install b1sted/tap/textfetch` |
 | [**`vlsx`**](https://github.com/b1sted/vlsx) | A lightweight terminal toolkit in C for network engineers to calculate VLSM, multicast MACs, SLA metrics, and DHCP timers. | `brew install b1sted/tap/vlsx` |
 
 ## Update
