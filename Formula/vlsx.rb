@@ -1,8 +1,8 @@
 class Vlsx < Formula
   desc "Lightweight terminal toolkit in C for network engineers"
   homepage "https://github.com/b1sted/vlsx"
-  url "https://github.com/b1sted/vlsx/archive/refs/tags/v0.1.1.tar.gz"
-  sha256 "54ec69342978280f10062b2d4bdb8bb936a01673e46f211d869cf7c2dc06c84f"
+  url "https://github.com/b1sted/vlsx/archive/refs/tags/v0.1.2.tar.gz"
+  sha256 "62d63bc9b03ea3623c200899e505d4c46be42a5e515a69a1895877ddadae14f6"
   license "GPL-3.0-or-later"
 
   def install
