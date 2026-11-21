@@ -13,7 +13,7 @@ class Textfetch < Formula
   test do
     assert_match "textfetch v#{version}", shell_output("#{bin}/textfetch -V")
 
-    output = shell_output("#{bin}/textfetch")
+    output = shell_output(bin/"textfetch")
     assert_match "OS: ", output
     assert_match "Kernel: ", output
   end
