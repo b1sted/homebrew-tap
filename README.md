@@ -37,6 +37,7 @@ brew install <package-name>
 | :--- | :--- | :--- |
 | [**`textfetch`**](https://github.com/b1sted/textfetch) | A minimal, fast system information tool for UNIX systems with no third-party dependencies. | `brew install b1sted/tap/textfetch` |
 | [**`vlsx`**](https://github.com/b1sted/vlsx) | A lightweight terminal toolkit in C for network engineers to calculate VLSM, multicast MACs, SLA metrics, and DHCP timers. | `brew install b1sted/tap/vlsx` |
+| [**`latbench`**](https://github.com/b1sted/latbench) | Empirical CPU, cache, TLB, DRAM, and OS latency microbenchmarking suite. | `brew install b1sted/tap/latbench` |
 
 ## Update
 
