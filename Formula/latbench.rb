@@ -1,8 +1,8 @@
 class Latbench < Formula
   desc "CPU, cache, TLB, DRAM, and OS latency microbenchmarks"
   homepage "https://github.com/b1sted/latbench"
-  url "https://github.com/b1sted/latbench/archive/refs/tags/v0.2.0.tar.gz"
-  sha256 "191e3a391b8fe2a85c6ec1e0a285343c78bdb52675e06e430392d6a2b97ef1e6"
+  url "https://github.com/b1sted/latbench/archive/refs/tags/v0.2.1.tar.gz"
+  sha256 "1ab46d6e8fe1175cd6d314aa8aef6698c828555ac176f2d645552b06ab3ef942"
   license "GPL-3.0"
 
   def install
